@@ -12,11 +12,9 @@ public class PlayerScript : MonoBehaviour {
     public float shipRotationSpeed = 2.0f;
     public float speed = 25.0f;
 
-    private RaycastHit2D hit;
+    public Vector2 direction;
 
-    void Start () {
-        // rigidbody2D.drag = 1.0f;
-    }
+    private RaycastHit2D hit;
 
 	void Update () {
         // Retrieve axis information
@@ -25,10 +23,7 @@ public class PlayerScript : MonoBehaviour {
 
 
         // Reflection
-
         hit = Physics2D.Raycast(transform.position, transform.up, 0.5f, 1 << LayerMask.NameToLayer("walls"));
-        Debug.DrawRay(transform.position, transform.up, Color.red);
-
 
         // Shooting
 

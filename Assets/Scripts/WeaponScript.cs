@@ -32,6 +32,7 @@ public class WeaponScript : MonoBehaviour {
 
             // assign position
             shotTransform.position = transform.position;
+            shotTransform.rotation = Quaternion.LookRotation(transform.forward, transform.up);
 
             // the isEnemy property
             ShotScript shot = shotTransform.gameObject.GetComponent<ShotScript>();
@@ -39,10 +40,8 @@ public class WeaponScript : MonoBehaviour {
                 shot.isEnemyShot = isEnemy;
             }
 
+            // MoveScript to keep it in motion
             MoveScript move = shotTransform.gameObject.GetComponent<MoveScript>();
-            if (move != null) {
-                move.direction = this.transform.up;
-            }
         }
     }
 

@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour {
     public float shipRotationSpeed = 2.0f;
     public float speed = 25.0f;
 
-    private Vector3 Direction;
+    private RaycastHit2D hit;
 
     void Start () {
         // rigidbody2D.drag = 1.0f;
@@ -26,18 +26,22 @@ public class PlayerScript : MonoBehaviour {
 
         // Reflection
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, 0.5f, 1 << LayerMask.NameToLayer("walls"));
+        hit = Physics2D.Raycast(transform.position, transform.up, 0.5f, 1 << LayerMask.NameToLayer("walls"));
         Debug.DrawRay(transform.position, transform.up, Color.red);
-
-        if (hit) {
-            Vector3 dir = Vector3.Reflect (transform.position.normalized, hit.normal);
-            float angle = Mathf.Atan2(-dir.x, dir.y) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        }
-
 
 
         // Shooting
+
+        bool shoot = Input.GetButtonDown("Fire1");
+        shoot |= Input.GetButtonDown("Fire2");
+
+        if (shoot) {
+            WeaponScript weapon = GetComponent<WeaponScript>();
+            if (weapon != null) {
+                weapon.Attack(false); // not isEnemy
+            }
+        }
+
 	}
 
     void FixedUpdate() {
@@ -46,6 +50,13 @@ public class PlayerScript : MonoBehaviour {
         rigidbody2D.velocity = (Vector2)transform.TransformDirection(Vector3.up) * thrustInput * speed;
         //  rigidbody2D.AddForce ((Vector2)transform.TransformDirection(Vector3.up) * thrustInput * speed);
 
+        if (hit) {
+            Vector3 dir = Vector3.Reflect (transform.position.normalized, hit.normal);
+            float angle = Mathf.Atan2(-dir.x, dir.y) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+
+        
      }
 
     void OnCollisionEnter2D(Collision2D collision) {

@@ -25,6 +25,7 @@ public class PlayerScript : MonoBehaviour {
         // Reflection
         hit = Physics2D.Raycast(transform.position, transform.up, 0.5f, 1 << LayerMask.NameToLayer("walls"));
 
+
         // Shooting
 
         bool shoot = Input.GetButtonDown("Fire1");
@@ -40,13 +41,18 @@ public class PlayerScript : MonoBehaviour {
 	}
 
     void FixedUpdate() {
+
         // Move the game object
         transform.Rotate(0.0f, 0.0f, directionInput * shipRotationSpeed * -1);
         rigidbody2D.velocity = (Vector2)transform.TransformDirection(Vector3.up) * thrustInput * speed;
-        //  rigidbody2D.AddForce ((Vector2)transform.TransformDirection(Vector3.up) * thrustInput * speed);
 
         if (hit) {
-            Vector3 dir = Vector3.Reflect (transform.position.normalized, hit.normal);
+
+            // reflect our old velocity off the contact point's normal vector
+            Vector3 dir = Vector3.Reflect (rigidbody2D.velocity, hit.normal);
+            rigidbody2D.velocity = dir;
+
+            // rotate to face the new velocity
             float angle = Mathf.Atan2(-dir.x, dir.y) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }

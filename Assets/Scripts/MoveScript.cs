@@ -5,18 +5,23 @@ public class MoveScript : MonoBehaviour {
     // object speed
     public float speed = 10.0f;
     private RaycastHit2D hit;
+    private Transform myTrans;
+
+    void Awake() {
+        myTrans = transform;
+    }
 
     void Update() {
 
         // raycast to check for wall reflection
-        hit = Physics2D.Raycast(transform.position, transform.up, 0.2f, 1 << LayerMask.NameToLayer("walls"));
+        hit = Physics2D.Raycast(myTrans.position, myTrans.up, 0.2f, 1 << LayerMask.NameToLayer("walls"));
 
     }
 
     void FixedUpdate() {
 
         // keep shot moving forward
-        rigidbody2D.velocity = (Vector2)transform.TransformDirection(Vector3.up) * speed;
+        rigidbody2D.velocity = (Vector2)myTrans.TransformDirection(Vector3.up) * speed;
 
 
         // wall reflection
@@ -24,7 +29,7 @@ public class MoveScript : MonoBehaviour {
             Vector3 dir = Vector3.Reflect (rigidbody2D.velocity, hit.normal);
             rigidbody2D.velocity = dir;
             float angle = Mathf.Atan2(-dir.x, dir.y) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            myTrans.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
     }

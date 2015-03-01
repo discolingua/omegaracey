@@ -15,15 +15,24 @@ public class PlayerScript : MonoBehaviour {
     public Vector2 direction;
 
     private RaycastHit2D hit;
+    private Transform myTrans; // cache transform for performance
+
+
+    void Awake () {
+        myTrans = transform;
+    }
 
 	void Update () {
         // Retrieve axis information
         directionInput = Input.GetAxis("Horizontal");
         thrustInput = Input.GetAxis("Vertical");
 
+        if (thrustInput < 0) {
+            thrustInput = 0;
+        }
 
         // Reflection
-        hit = Physics2D.Raycast(transform.position, transform.up, 0.5f, 1 << LayerMask.NameToLayer("walls"));
+        hit = Physics2D.Raycast(myTrans.position, myTrans.up, 0.5f, 1 << LayerMask.NameToLayer("walls"));
 
 
         // Shooting
@@ -43,8 +52,10 @@ public class PlayerScript : MonoBehaviour {
     void FixedUpdate() {
 
         // Move the game object
-        transform.Rotate(0.0f, 0.0f, directionInput * shipRotationSpeed * -1);
-        rigidbody2D.velocity = (Vector2)transform.TransformDirection(Vector3.up) * thrustInput * speed;
+        myTrans.Rotate(0.0f, 0.0f, directionInput * shipRotationSpeed * -1);
+
+        rigidbody2D.velocity = (Vector2)myTrans.TransformDirection(Vector3.up) * thrustInput * speed;
+
 
         if (hit) {
 
@@ -54,7 +65,7 @@ public class PlayerScript : MonoBehaviour {
 
             // rotate to face the new velocity
             float angle = Mathf.Atan2(-dir.x, dir.y) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            myTrans.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
         

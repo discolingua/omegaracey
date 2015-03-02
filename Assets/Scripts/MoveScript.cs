@@ -8,7 +8,9 @@ public class MoveScript : MonoBehaviour {
     private Transform myTrans;
 
     void Awake() {
+        // cache transform for performance
         myTrans = transform;
+        myTrans.rigidbody2D.angularVelocity = Mathf.Clamp(myTrans.rigidbody2D.angularVelocity, -5f, 5f);
     }
 
     void Update() {
@@ -21,13 +23,13 @@ public class MoveScript : MonoBehaviour {
     void FixedUpdate() {
 
         // keep shot moving forward
-        rigidbody2D.velocity = (Vector2)myTrans.TransformDirection(Vector3.up) * speed;
+        myTrans.rigidbody2D.velocity = (Vector2)myTrans.TransformDirection(Vector3.up) * speed;
 
 
         // wall reflection
         if (hit) {
             Vector3 dir = Vector3.Reflect (rigidbody2D.velocity, hit.normal);
-            rigidbody2D.velocity = dir;
+            myTrans.rigidbody2D.velocity = dir;
             float angle = Mathf.Atan2(-dir.x, dir.y) * Mathf.Rad2Deg;
             myTrans.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }

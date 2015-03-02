@@ -4,20 +4,35 @@ public class SkullShip : MonoBehaviour {
 
     public Transform target;
     private Transform myTrans;
+    private WeaponScript[] weapons;
 
-    private float maxAngularSpeedDegrees = 0.3f;
+    public float speed = 1.0f;
 
     void Awake() {
+
+        // cache transform for performance
         myTrans = transform;
+
+        weapons = GetComponentsInChildren<WeaponScript>();
     }
 
     void Update() {
-        Quaternion rotation = Quaternion.LookRotation(target.transform.position - myTrans.position,
-                                                      myTrans.TransformDirection(Vector3.up));
-        myTrans.rotation = Quaternion.RotateTowards(myTrans.rotation, new Quaternion(0,0,rotation.z, rotation.w), 
-                                                    maxAngularSpeedDegrees * Time.time);
-        // myTrans.rotation = Quaternion.Slerp(myTrans.rotation, new Quaternion(0,0,rotation.z, rotation.w), Time.time * speed);
-        // myTrans.rotation = new Quaternion(0,0, rotation.z, rotation.w);
-        // myTrans.Rotate(0.0f, 0.0f, 1);
+        foreach (WeaponScript weapon in weapons) {
+            if (weapon != null && weapon.CanAttack) {
+                weapon.Attack(true);
+            }
+        }
+    }
+
+    void FixedUpdate() {
+
+        // calculate rotation towards player
+        Vector3 dir = target.transform.position - myTrans.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        myTrans.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+
+        // move forward
+        myTrans.Translate(speed * Time.deltaTime,0,0);
+      
     }
 }

@@ -9,7 +9,7 @@ public class PlayerScript : MonoBehaviour {
 
     public float directionInput;
     public float thrustInput;
-    public float shipRotationSpeed = 2.0f;
+    public float shipRotationSpeed = 40.0f;
     public float speed = 25.0f;
 
     public Vector2 direction;

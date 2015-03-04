@@ -10,7 +10,6 @@ public class MoveScript : MonoBehaviour {
     void Awake() {
         // cache transform for performance
         myTrans = transform;
-        myTrans.rigidbody2D.angularVelocity = Mathf.Clamp(myTrans.rigidbody2D.angularVelocity, -5f, 5f);
     }
 
     void Update() {

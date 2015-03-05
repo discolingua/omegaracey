@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 
 /// <summary>
@@ -7,8 +7,8 @@
 
 public class PlayerScript : MonoBehaviour {
 
-    public float directionInput;
-    public float thrustInput;
+    private float directionInput;
+    private float thrustInput;
     public float shipRotationSpeed = 0.3f;
     public float speed = 15.0f;
     public float deacceleration = 0.8f;

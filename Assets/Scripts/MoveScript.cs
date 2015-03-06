@@ -4,6 +4,10 @@ public class MoveScript : MonoBehaviour {
 
     // object speed
     public float speed = 10.0f;
+
+    // length of raycast to track different sized objects
+    public float raycastLength = 0.2f;
+
     private RaycastHit2D hit;
     private Transform myTrans;
 
@@ -15,7 +19,8 @@ public class MoveScript : MonoBehaviour {
     void Update() {
 
         // raycast to check for wall reflection
-        hit = Physics2D.Raycast(myTrans.position, myTrans.up, 0.2f, 1 << LayerMask.NameToLayer("walls"));
+        hit = Physics2D.Raycast(myTrans.position, myTrans.up, raycastLength, 
+                                1 << LayerMask.NameToLayer("walls"));
 
     }
 

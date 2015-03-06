@@ -35,9 +35,12 @@ public class WeaponScript : MonoBehaviour {
             // create a new shot
             var shotTransform = Instantiate(shotPrefab) as Transform;
 
-            // rotate to face player, multiply quaternion to fix facing
+            // rotate to face player, multiply quaternion to fix enemy facing
             Quaternion rot = Quaternion.LookRotation(myTrans.forward, myTrans.up);
-            // rot *= Quaternion.Euler(0, 0, -90);
+            
+            if (isEnemy) { 
+                rot *= Quaternion.Euler(0, 0, -90); 
+            }
             
             shotTransform.position = myTrans.position;
             shotTransform.rotation = rot;

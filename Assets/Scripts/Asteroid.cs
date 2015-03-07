@@ -3,8 +3,10 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour {
 
     private Transform myTrans;
+    private Transform asteroidTransform;
     public Transform asteroidPrefab;
     public bool splitThis = true;
+    public int splitCopies = 2;
 
     void Awake() {
         myTrans = transform;
@@ -25,8 +27,9 @@ public class Asteroid : MonoBehaviour {
             Destroy(shot.gameObject);
 
             if (splitThis) {
-                var asteroidTransform = Instantiate(asteroidPrefab, myTrans.position, Quaternion.identity) as Transform;
-                var asteroidTransform2 = Instantiate(asteroidPrefab, myTrans.position, Quaternion.identity) as Transform;
+                for (int i = 1; i <= splitCopies; i++) {
+                    asteroidTransform = Instantiate(asteroidPrefab, myTrans.position, Quaternion.identity) as Transform;
+                }
             }
             
             // destroy this asteroid

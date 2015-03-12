@@ -11,7 +11,7 @@ public class CameraFollowScript : MonoBehaviour {
     }
 
     void Start() {
-        player = GameObject.Find ("PlayerShip").transform;
+        player = GameObject.Find ("Player Ship").transform;
     }
 
 

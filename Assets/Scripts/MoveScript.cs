@@ -27,13 +27,13 @@ public class MoveScript : MonoBehaviour {
     void FixedUpdate() {
 
         // keep shot moving forward
-        myTrans.rigidbody2D.velocity = (Vector2)myTrans.TransformDirection(Vector3.up) * speed;
+        myTrans.GetComponent<Rigidbody2D>().velocity = (Vector2)myTrans.TransformDirection(Vector3.up) * speed;
 
 
         // wall reflection
         if (hit) {
-            Vector3 dir = Vector3.Reflect (rigidbody2D.velocity, hit.normal);
-            myTrans.rigidbody2D.velocity = dir;
+            Vector3 dir = Vector3.Reflect (GetComponent<Rigidbody2D>().velocity, hit.normal);
+            myTrans.GetComponent<Rigidbody2D>().velocity = dir;
             float angle = Mathf.Atan2(-dir.x, dir.y) * Mathf.Rad2Deg;
             myTrans.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }

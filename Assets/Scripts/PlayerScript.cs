@@ -39,8 +39,8 @@ public class PlayerScript : MonoBehaviour {
 
         // Shooting
 
-        bool shoot = Input.GetButtonDown("Fire1");
-        shoot |= Input.GetButtonDown("Fire2");
+        bool shoot = Input.GetButton("Fire1");
+        shoot |= Input.GetButton("Fire2");
 
         if (shoot) {
             WeaponScript weapon = GetComponent<WeaponScript>();
@@ -56,7 +56,7 @@ public class PlayerScript : MonoBehaviour {
         // Move the game object
         myTrans.Rotate(0.0f, 0.0f, directionInput * shipRotationSpeed * -1);
 
-        rigidbody2D.velocity = (Vector2)myTrans.TransformDirection(Vector3.up) 
+        GetComponent<Rigidbody2D>().velocity = (Vector2)myTrans.TransformDirection(Vector3.up) 
             * thrustInput * speed;
 
         // slow momentum
@@ -66,8 +66,8 @@ public class PlayerScript : MonoBehaviour {
         if (hit) {
 
             // reflect our old velocity off the contact point's normal vector
-            Vector3 dir = Vector3.Reflect (rigidbody2D.velocity, hit.normal);
-            rigidbody2D.velocity = dir;
+            Vector3 dir = Vector3.Reflect (GetComponent<Rigidbody2D>().velocity, hit.normal);
+            GetComponent<Rigidbody2D>().velocity = dir;
 
             // rotate to face the new velocity
             float angle = Mathf.Atan2(-dir.x, dir.y) * Mathf.Rad2Deg;

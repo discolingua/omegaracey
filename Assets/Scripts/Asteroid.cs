@@ -11,6 +11,7 @@ public class Asteroid : MonoBehaviour {
     public int score = 100;
 
     void Awake() {
+        // cache self transform for performance
         myTrans = transform;
     }
 
@@ -42,9 +43,10 @@ public class Asteroid : MonoBehaviour {
             }
 
             // increment score
-            uiTrans.GetComponent<UIScript>().scoreInt += score;
-            uiTrans.GetComponent<UIScript>().scoreText.text = uiTrans.GetComponent<UIScript>().scoreInt.ToString("D8");
-
+            ScoreScript scoreScript = GetComponent<ScoreScript>();
+            if (scoreScript != null) {
+                scoreScript.ScoreAdd(score);
+            }
             
             // destroy this asteroid
             Destroy(gameObject);

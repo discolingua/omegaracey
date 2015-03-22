@@ -16,10 +16,6 @@ public class Asteroid : MonoBehaviour {
     }
 
     void Start() {
-
-        // ui object for updating score
-        uiTrans = GameObject.Find("Canvas");
-        
         // set random rotation
         Quaternion rot = Quaternion.LookRotation(myTrans.forward, myTrans.up);
         rot *= Quaternion.Euler(0,0, Random.Range(-180.0f, 180.0f));
@@ -28,14 +24,14 @@ public class Asteroid : MonoBehaviour {
     
     void OnTriggerEnter2D(Collider2D otherCollider) {
 
-        int myScore;
-        
+        // does the otherCollider have a shot script?
         ShotScript shot = otherCollider.gameObject.GetComponent<ShotScript>();
         if (shot != null) {
 
             // destroy the shot
             Destroy(shot.gameObject);
 
+            // split sub-asteroids
             if (splitThis) {
                 for (int i = 1; i <= splitCopies; i++) {
                     asteroidTransform = Instantiate(asteroidPrefab, myTrans.position, Quaternion.identity) as Transform;
@@ -43,9 +39,9 @@ public class Asteroid : MonoBehaviour {
             }
 
             // increment score
-            ScoreScript scoreScript = GetComponent<ScoreScript>();
-            if (scoreScript != null) {
-                scoreScript.ScoreAdd(score);
+            UIScript uiScript = GameObject.Find("UICanvas").GetComponent<UIScript>();
+            if (uiScript != null) {
+                uiScript.ScoreAdd(score);
             }
             
             // destroy this asteroid

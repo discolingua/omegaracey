@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour {
 
-    public int scoreInt = 0;
-    public Text scoreText;
+    private int scoreInt = 0;
+    private Text scoreText;
 
     void Awake () {
         scoreText = GetComponentInChildren<Text>();
@@ -14,4 +14,10 @@ public class UIScript : MonoBehaviour {
     void Start () {
         scoreText.text = scoreInt.ToString("D8");
     }
+
+    public void ScoreAdd (int myScore) {
+        scoreInt += myScore;
+        scoreText.text = scoreInt.ToString("D8");
+    }
+
 }
